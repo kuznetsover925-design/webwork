@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Вебмайстерня IT / Security. Спробуй мультимедіа, буфер обміну, геолокацію й системні сповіщення.">
+  <meta name="theme-color" content="#f7f5ed">
+  <title>Вебмайстерня · Журнал сигналів</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">До основного вмісту</a>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="index.html" aria-label="IT Security, головна">
+        <span class="brand-icon" aria-hidden="true">›_</span> IT / SECURITY
+      </a>
+      <nav aria-label="Основна навігація">
+        <a href="#media">Медіа</a>
+        <a href="#browser-api">Спробуй браузер</a>
+        <a href="#about">Основи вебу</a>
+        <a class="nav-form" href="register.html">Реєстрація <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell" id="main" tabindex="-1">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="section-label">Інтернет-технології та інформаційна безпека</p>
+        <h1 id="page-title">Вебмайстерня<span>.</span></h1>
+      </div>
+      <p>Натисни кнопку, щоб побачити, як браузер відповідає. Результат буде поруч, а короткий статус з’явиться в журналі.</p>
+    </section>
+
+    <section class="media-layout" id="media" aria-label="Мультимедіа">
+      <section class="video-demo" data-player="video" aria-labelledby="video-title">
+        <div class="player-heading">
+          <h2 id="video-title">Хто зламав ліфт?</h2>
+        </div>
+        <video controls playsinline width="1920" height="1080" preload="metadata"
+               aria-labelledby="video-title" poster="media/browser-signal-poster.jpg" src="media/browser-signal.mp4">
+          <track kind="captions" src="media/browser-signal-uk.vtt" srclang="uk" label="Українська">
+          Твій браузер не підтримує відео.
+        </video>
+        <div class="player-controls">
+          <div class="player-buttons" role="group" aria-label="Керування відео">
+            <button type="button" data-play lang="en">Play</button>
+            <button type="button" data-pause lang="en">Pause</button>
+            <button type="button" data-mute lang="en">Mute</button>
+          </div>
+          <div class="playback-readout">
+            <span class="playback-meter" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <p class="status" data-player-status role="status">Готове до відтворення.</p>
+          </div>
+        </div>
+        <details class="transcript">
+          <summary>Текстова версія відео</summary>
+          <ol>
+            <li>Мешканець натискає кнопку, але ліфт стоїть на сьомому поверсі.</li>
+            <li>HTML додає кнопку з підписом. CSS змінює її вигляд, зокрема під час натискання.</li>
+            <li>У цій моделі JavaScript обробляє клік і запускає рух ліфта.</li>
+            <li>Порівняй ці ролі в розділі <a href="#about">«Основи вебу»</a>.</li>
+          </ol>
+        </details>
+      </section>
+
+      <div class="media-side">
+        <section class="audio-demo" data-player="audio" aria-labelledby="audio-title">
+          <div class="player-heading">
+            <h2 id="audio-title">Сигнал майстерні</h2>
+          </div>
+          <p>Звуковий фрагмент із відео «Хто зламав ліфт?» — від виклику до прибуття кабіни.</p>
+          <div class="waveform" aria-hidden="true">
+            <span style="--level:86%"></span><span style="--level:24%"></span><span style="--level:5%"></span><span style="--level:5%"></span>
+            <span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:5%"></span>
+            <span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:86%"></span>
+            <span style="--level:8%"></span><span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:5%"></span>
+            <span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:5%"></span><span style="--level:5%"></span>
+            <span style="--level:5%"></span><span style="--level:95%"></span><span style="--level:76%"></span><span style="--level:5%"></span>
+          </div>
+          <audio controls preload="metadata" aria-labelledby="audio-title" src="media/browser-signal.wav">
+            Твій браузер не підтримує аудіо.
+          </audio>
+          <div class="player-buttons" role="group" aria-label="Керування аудіо">
+            <button type="button" data-play lang="en">Play</button>
+            <button type="button" data-pause lang="en">Pause</button>
+            <button type="button" data-mute lang="en">Mute</button>
+          </div>
+          <div class="playback-readout">
+            <span class="playback-meter" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <p class="status" data-player-status role="status">Готове до відтворення.</p>
+          </div>
+        </section>
+
+        <div class="sound-panel">
+          <div class="sound-setting">
+            <button class="sound-toggle" type="button" id="sound-toggle" aria-pressed="false" disabled>
+              <span class="switch-track" aria-hidden="true"></span>
+              Звук інтерфейсу
+            </button>
+            <span class="status" id="sound-state" aria-hidden="true">Вимкнено</span>
+          </div>
+          <p>Короткий сигнал лише після успішного копіювання.</p>
+          <p class="status" id="sound-status" role="status"></p>
+          <audio id="interface-cue" preload="none" src="media/copy-ok.wav" hidden></audio>
+        </div>
+      </div>
+    </section>
+
+    <section class="lesson" id="browser-api" aria-labelledby="api-title">
+      <div class="lesson-heading">
+        <h2 id="api-title">Спробуй браузер</h2>
+        <p>Кожна кнопка звертається до окремої можливості браузера.</p>
+      </div>
+      <p class="api-context" id="api-context" hidden>Щоб перевірити дозволи браузера, запусти сайт через <code>localhost</code> або HTTPS.</p>
+      <div class="bench">
+        <div class="api-list">
+          <section class="api-row" id="clipboard-demo" aria-labelledby="clipboard-title">
+            <div class="api-task">
+              <h3 id="clipboard-title">Буфер обміну</h3>
+              <label for="copy-text">Текст для копіювання</label>
+              <input id="copy-text" type="text" value="Привіт із Вебмайстерні!" autocomplete="off">
+            </div>
+            <div class="api-action">
+              <button class="primary" type="button" id="copy-text-button">Копіювати</button>
+              <span class="pixel-fan" id="copy-effect" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+            </div>
+            <p class="status" id="copy-status" role="status">Чекає на дію.</p>
+          </section>
+          <section class="api-row" id="geolocation-demo" aria-labelledby="geo-title">
+            <div class="api-task">
+              <h3 id="geo-title">Геолокація</h3>
+              <p>Координати залишаються на сторінці.</p>
+            </div>
+            <div class="api-action">
+              <button type="button" id="geo-button">Визначити геолокацію</button>
+            </div>
+            <div class="geo-result">
+              <span class="location-ring" id="geo-effect" aria-hidden="true"></span>
+              <p class="status" id="geo-status" role="status">Чекає на дію.</p>
+            </div>
+          </section>
+          <section class="api-row" id="notification-demo" aria-labelledby="notify-title">
+            <div class="api-task">
+              <h3 id="notify-title">Сповіщення</h3>
+              <p>Спробуй надіслати системне сповіщення.</p>
+            </div>
+            <div class="api-action">
+              <button type="button" id="notify-button" aria-describedby="notify-permission">Показати сповіщення</button>
+            </div>
+            <div>
+              <p class="permission" id="notify-permission">Стан дозволу можна перевірити після запуску JavaScript.</p>
+              <p class="status" id="notify-status" role="status"></p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="journal" aria-labelledby="journal-title">
+          <h3 id="journal-title">Журнал сигналів</h3>
+          <p class="log-empty" id="log-empty">Поки що немає записів.</p>
+          <ul class="signal-log" id="signal-log" role="list"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="lesson notebook" id="about" aria-labelledby="about-title">
+      <div class="lesson-heading">
+        <h2 id="about-title">Основи вебу</h2>
+        <p>Розмітка задає зміст, стилі визначають вигляд, скрипт обробляє дії.</p>
+      </div>
+      <div class="web-lab">
+        <div>
+          <h3>Одна кнопка, три шари</h3>
+          <div class="switches" role="group" aria-label="Шар прикладу">
+            <button type="button" data-step="html" aria-pressed="true">HTML</button>
+            <button type="button" data-step="css" aria-pressed="false">CSS</button>
+            <button type="button" data-step="js" aria-pressed="false">JavaScript</button>
+          </div>
+          <p id="lesson-explain" role="status">HTML додає номер поверху й кнопку виклику.</p>
+        </div>
+        <div class="sample" id="sample" data-step="html">
+          <h3>Панель ліфта</h3>
+          <div class="lift-shaft" aria-hidden="true">
+            <div class="lift-car"><span></span><span></span></div>
+          </div>
+          <p class="lift-floor">Поверх <span id="lift-floor">7</span></p>
+          <button type="button" id="sample-action">Викликати</button>
+          <p id="sample-result" role="status"></p>
+        </div>
+      </div>
+      <div class="notes">
+        <div>
+          <h3>З чого складається сторінка</h3>
+          <p>Відкрий код сторінки, щоб знайти ці три частини.</p>
+          <ul>
+            <li><strong>HTML</strong> задає заголовки, списки, посилання й поля.</li>
+            <li><strong>CSS</strong> керує оформленням і макетом.
+              <ul>
+                <li>На вузькому екрані блоки стають в одну колонку.</li>
+                <li>Рамка показує, де зараз клавіатурний фокус.</li>
+              </ul>
+            </li>
+            <li><strong>JavaScript</strong> обробляє <em>натискання кнопки</em> та виводить відповідь.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Три кроки перед введенням даних</h3>
+          <p>Для вправи підійде адреса <code>user@example.test</code>.</p>
+          <ol>
+            <li>Перевір адресу сторінки.</li>
+            <li>З’ясуй, навіщо потрібні поля.</li>
+            <li>Для навчання використовуй вигадані дані.</li>
+          </ol>
+          <a class="button" href="register.html">Спробувати форму <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <blockquote>
+        <p>Зрозуміла структура, читабельний текст і передбачувана навігація допомагають користуватися сайтом.</p>
+      </blockquote>
+      <p><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content">Основи HTML на MDN</a></p>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <p>Вебмайстерня · IT / Security</p>
+    <a href="#page-title">На початок ↑</a>
+  </footer>
+  <script src="script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Демонстраційна форма реєстрації у Вебмайстерні IT / Security.">
+  <meta name="theme-color" content="#f7f5ed">
+  <title>Реєстрація · Вебмайстерня</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">До основного вмісту</a>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="index.html" aria-label="IT Security, головна"><span class="brand-icon" aria-hidden="true">›_</span> IT / SECURITY</a>
+      <nav aria-label="Основна навігація">
+        <a href="index.html#about">Основи вебу</a>
+        <a class="nav-form" href="register.html" aria-current="page">Реєстрація</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell registration" id="main" tabindex="-1">
+    <section class="registration-intro" aria-labelledby="page-title">
+      <a href="index.html">← На головну</a>
+      <h1 id="page-title">Реєстрація<span>.</span></h1>
+      <p>Спробуйте, як браузер перевіряє введені дані.</p>
+      <div class="stage" aria-hidden="true">
+        <div class="pet" id="pixel" data-mood="idle">
+          <span class="tail"></span><span class="torso"></span><span class="ear"></span><span class="ear right"></span>
+          <div class="head"><span class="mask"></span><span class="eye"></span><span class="eye right"></span><span class="nose"></span><span class="mouth"></span></div>
+          <span class="paw"></span><span class="paw right"></span>
+        </div>
+      </div>
+      <p id="pet-line" aria-hidden="true">Почнемо з імені?</p>
+    </section>
+    <section class="form-panel" aria-labelledby="form-title">
+      <h2 id="form-title">Реєстрація користувача</h2>
+      <p class="small">Усі поля обов’язкові. Використай вигадані дані: форма нічого не надсилає.</p>
+      <form id="registration-form" autocomplete="off">
+        <!-- Поля без name не включаються до даних навіть при штатному надсиланні форми. -->
+        <div class="field">
+          <label for="name">Ім’я</label>
+          <input type="text" id="name" aria-describedby="name-feedback" placeholder="Олена Приклад" minlength="2" required>
+          <p class="field-feedback" id="name-feedback"></p>
+        </div>
+        <div class="field">
+          <label for="email">Електронна пошта</label>
+          <input type="email" id="email" aria-describedby="email-feedback" placeholder="olena@example.test" required>
+          <p class="field-feedback" id="email-feedback"></p>
+        </div>
+        <div class="field">
+          <label for="password">Пароль</label>
+          <div class="password-row">
+            <input type="password" id="password" minlength="8" aria-describedby="password-hint password-feedback" autocomplete="new-password" required>
+            <button type="button" id="toggle-password" aria-controls="password">Показати</button>
+          </div>
+          <p class="small hint" id="password-hint">Щонайменше 8 символів.</p>
+          <p class="field-feedback" id="password-feedback"></p>
+        </div>
+        <div class="field">
+          <label for="country">Країна</label>
+          <select id="country" aria-describedby="country-feedback" required>
+            <option value="">Оберіть країну</option>
+            <option>Україна</option>
+            <option>Німеччина</option>
+            <option>Польща</option>
+            <option>Чехія</option>
+            <option>Австрія</option>
+            <option>Франція</option>
+            <option>Інша країна</option>
+          </select>
+          <p class="field-feedback" id="country-feedback"></p>
+        </div>
+        <button class="button" id="submit-form" type="submit" disabled>Перевірити форму</button>
+        <p class="status" id="form-status" role="status"></p>
+        <noscript><p>Для перевірки форми увімкніть JavaScript.</p></noscript>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <p>Інтернет-технології та інформаційна безпека</p>
+    <a href="index.html">Вебмайстерня</a>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
