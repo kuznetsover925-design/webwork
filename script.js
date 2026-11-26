@@ -159,7 +159,7 @@ const signalLabels = {
   liftArrived: "Ліфт прибув на перший поверх",
 };
 
-function addSignal(key) {
+function addSignal(key, source) {
   const log = document.getElementById("signal-log");
   if (!log || !Object.hasOwn(signalLabels, key)) return;
 
@@ -167,6 +167,7 @@ function addSignal(key) {
   const entry = document.createElement("li");
   entry.textContent = signalLabels[key];
   log.prepend(entry);
+  deliverSignal(source, log);
   if (log.children.length > 4) log.lastElementChild.remove();
   document.getElementById("log-empty").hidden = true;
 }
@@ -267,7 +268,7 @@ function initPlayer(player) {
     playbackFailed = false;
     player.classList.add("has-played");
     if (!loggedRun) {
-      addSignal(player.dataset.player === "video" ? "videoStarted" : "audioStarted");
+      addSignal(player.dataset.player === "video" ? "videoStarted" : "audioStarted", media);
       loggedRun = true;
     }
     updatePlayerStatus();
@@ -297,6 +298,24 @@ function initClipboard(playCopyCue) {
   const input = document.getElementById("copy-text");
   const status = document.getElementById("copy-status");
   const effect = document.getElementById("copy-effect");
+  let lastCopy = null;
+  let holdTimer;
+  function release() {
+    clearTimeout(holdTimer);
+    button.classList.remove("held");
+  }
+  button.addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
+    release();
+    holdTimer = setTimeout(() => button.classList.add("held"), 350);
+  });
+  for (const event of ["pointerup", "pointercancel", "blur"]) window.addEventListener(event, release);
+  button.addEventListener("pointerleave", release);
+  input.addEventListener("paste", event => {
+    if (!lastCopy || event.clipboardData?.getData("text/plain") !== lastCopy) return;
+    lastCopy = null;
+    setTimeout(() => { status.textContent = "Піксель: «З поверненням!»"; }, 0);
+  });
 
   button.addEventListener("click", async () => {
     if (button.hasAttribute("aria-disabled")) return;
@@ -312,9 +331,11 @@ function initClipboard(playCopyCue) {
 
     button.setAttribute("aria-disabled", "true");
     try {
-      await navigator.clipboard.writeText(input.value);
+      const copied = input.value;
+      await navigator.clipboard.writeText(copied);
+      lastCopy = copied;
       status.textContent = "Текст скопійовано.";
-      addSignal("copied");
+      addSignal("copied", button);
       flashEffect(effect);
       playCopyCue?.();
     } catch (error) {
@@ -343,7 +364,7 @@ function initGeolocation() {
     const { latitude, longitude } = position.coords;
     status.textContent = `Широта: ${latitude.toFixed(5)}°, довгота: ${longitude.toFixed(5)}°.`;
     button.removeAttribute("aria-disabled");
-    addSignal("located");
+    addSignal("located", button);
     flashEffect(effect);
   }
 
@@ -355,7 +376,7 @@ function initGeolocation() {
     };
     status.textContent = messages[error.code] || "Помилка геолокації.";
     button.removeAttribute("aria-disabled");
-    if (error.code === 1) addSignal("locationDenied");
+    if (error.code === 1) addSignal("locationDenied", button);
   }
 
   button.addEventListener("click", () => {
@@ -508,6 +529,7 @@ function initWebLab() {
   const display = document.getElementById("lift-floor");
   const status = document.getElementById("sample-result");
   const explanation = document.getElementById("lesson-explain");
+  let trips = 0;
   let floor = 7;
   let timer;
 
@@ -534,11 +556,15 @@ function initWebLab() {
     call.removeAttribute("aria-disabled");
     call.textContent = "Повернути на сьомий";
     status.textContent = "Поверх 1. Двері відчинено.";
-    addSignal("liftArrived");
+    panel.classList.toggle("has-parcel", ++trips % 2 === 1);
+    addSignal("liftArrived", call);
   }
 
   function callLift() {
-    if (panel.classList.contains("moving")) return;
+    if (panel.classList.contains("moving")) {
+      status.textContent = "Піксель: «Я теж так роблю. Швидше не їде».";
+      return;
+    }
     if (floor === 1) {
       resetLift();
       return;
@@ -589,3 +615,34 @@ function initWebLab() {
 }
 
 initWebLab();
+
+function deliverSignal(source, log) {
+  if (!source || !source.animate || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const from = source.getBoundingClientRect();
+  const to = log.getBoundingClientRect();
+  if (from.bottom < 0 || from.top > innerHeight) return;
+  if (to.top < 0 || to.top > innerHeight - 16) {
+    source.animate([{opacity: .72}, {opacity: 1}], {duration: 180});
+    return;
+  }
+  const dot = document.createElement("i");
+  dot.className = "signal-spark";
+  dot.setAttribute("aria-hidden", "true");
+  const x = from.left + from.width / 2;
+  const y = from.top + from.height / 2;
+  dot.style.left = x + "px";
+  dot.style.top = y + "px";
+  document.body.append(dot);
+  const flight = dot.animate([{transform: "translate(0,0)"}, {
+    transform: `translate(${to.left + 10 - x}px,${to.top + 8 - y}px)`, opacity: 0
+  }], {duration: 410, easing: "ease-out"});
+  flight.onfinish = flight.oncancel = () => dot.remove();
+}
+
+const soundtrack = document.querySelector('.audio-demo audio[controls]');
+if (soundtrack) {
+  const face = soundtrack.closest(".audio-demo").querySelector(".mini-pixel");
+  for (const event of ["playing", "pause", "ended", "waiting"]) {
+    soundtrack.addEventListener(event, () => { face.dataset.sound = event; });
+  }
+}
