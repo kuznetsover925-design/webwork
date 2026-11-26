@@ -33,6 +33,28 @@
       <p>Натисни кнопку, щоб побачити, як браузер відповідає. Результат буде поруч, а короткий статус з’явиться в журналі.</p>
     </section>
 
+      <section class="web-lab" aria-labelledby="lift-title">
+        <div>
+          <h2 id="lift-title">Хто вимкнув ліфт?</h2>
+          <p>На сьомому поверсі застряг ліфт. Увімкни потрібні шари й виклич його на перший.</p>
+          <div class="switches" role="group" aria-label="Шари панелі ліфта">
+            <button type="button" data-step="html" aria-pressed="true">HTML</button>
+            <button type="button" data-step="css" aria-pressed="false">CSS</button>
+            <button type="button" data-step="js" aria-pressed="false">JavaScript</button>
+          </div>
+          <p id="lesson-explain" role="status">Панель є, але кнопка мовчить. Що запускає рух?</p>
+        </div>
+        <div class="sample" id="sample" data-step="html">
+          <h3>Панель ліфта</h3>
+          <div class="lift-shaft" aria-hidden="true">
+            <div class="lift-car"><span></span><span></span></div>
+          </div>
+          <p class="lift-floor">Поверх <span id="lift-floor">7</span></p>
+          <button type="button" id="sample-action">Викликати</button>
+          <p id="sample-result" role="status"></p>
+        </div>
+      </section>
+
     <section class="media-layout" id="media" aria-label="Мультимедіа">
       <section class="video-demo" data-player="video" aria-labelledby="video-title">
         <div class="player-heading">
@@ -168,26 +190,6 @@
       <div class="lesson-heading">
         <h2 id="about-title">Основи вебу</h2>
         <p>Розмітка задає зміст, стилі визначають вигляд, скрипт обробляє дії.</p>
-      </div>
-      <div class="web-lab">
-        <div>
-          <h3>Одна кнопка, три шари</h3>
-          <div class="switches" role="group" aria-label="Шар прикладу">
-            <button type="button" data-step="html" aria-pressed="true">HTML</button>
-            <button type="button" data-step="css" aria-pressed="false">CSS</button>
-            <button type="button" data-step="js" aria-pressed="false">JavaScript</button>
-          </div>
-          <p id="lesson-explain" role="status">HTML додає номер поверху й кнопку виклику.</p>
-        </div>
-        <div class="sample" id="sample" data-step="html">
-          <h3>Панель ліфта</h3>
-          <div class="lift-shaft" aria-hidden="true">
-            <div class="lift-car"><span></span><span></span></div>
-          </div>
-          <p class="lift-floor">Поверх <span id="lift-floor">7</span></p>
-          <button type="button" id="sample-action">Викликати</button>
-          <p id="sample-result" role="status"></p>
-        </div>
       </div>
       <div class="notes">
         <div>
