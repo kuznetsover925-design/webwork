@@ -508,11 +508,6 @@ function initWebLab() {
   const display = document.getElementById("lift-floor");
   const status = document.getElementById("sample-result");
   const explanation = document.getElementById("lesson-explain");
-  const captions = {
-    html: "HTML додає номер поверху й кнопку виклику.",
-    css: "Притримай кнопку: вона підсвітиться, а поверх залишиться тим самим.",
-    js: "Обробник підключено. Натисни «Викликати», щоб кабіна спустилася.",
-  };
   let floor = 7;
   let timer;
 
@@ -562,18 +557,35 @@ function initWebLab() {
     }, 450);
   }
 
+  const active = new Set(["html"]);
+  function updatePanel() {
+    const hasMarkup = active.has("html");
+    const styled = active.has("css");
+    const wired = active.has("js");
+    panel.hidden = !hasMarkup;
+    panel.dataset.step = styled ? "css" : "html";
+    call.removeEventListener("click", callLift);
+    if (hasMarkup && wired) call.addEventListener("click", callLift);
+    if (!hasMarkup) explanation.textContent = "HTML вимкнено. Поверни розмітку, щоб побачити панель.";
+    else if (wired) explanation.textContent = styled
+      ? "Панель зібрано. Виклич ліфт і простеж за кабіною."
+      : "Кнопка вже працює. Виклич ліфт і стеж за номером поверху.";
+    else explanation.textContent = styled
+      ? "Кнопка підсвічується, але ліфт стоїть. Якого шару бракує?"
+      : "Панель є, але кнопка мовчить. Що запускає рух?";
+  }
+
   for (const layer of layers) {
     layer.addEventListener("click", () => {
-      const step = layer.dataset.step;
-      if (step === panel.dataset.step) return;
-      resetLift();
-      panel.dataset.step = step;
-      explanation.textContent = captions[step];
-      for (const item of layers) item.setAttribute("aria-pressed", String(item === layer));
-      call.removeEventListener("click", callLift);
-      if (step === "js") call.addEventListener("click", callLift);
+      const name = layer.dataset.step;
+      if (active.has(name)) active.delete(name);
+      else active.add(name);
+      layer.setAttribute("aria-pressed", String(active.has(name)));
+      if (name !== "css") resetLift();
+      updatePanel();
     });
   }
+  updatePanel();
 }
 
 initWebLab();
