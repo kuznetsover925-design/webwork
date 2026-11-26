@@ -1280,3 +1280,35 @@ blockquote {
     animation: none;
   }
 }
+
+/* Мініатюра Пікселя для пульта й майстерні. */
+.mini-pixel {
+  display:inline-block; position:relative; width:22px; height:17px;
+  vertical-align:middle; background:#a9c7a9; border:2px solid #314a40;
+  border-radius:5px 5px 3px 3px; box-sizing:border-box;
+}
+.mini-pixel b {
+  position:absolute; left:4px; top:4px; width:3px; height:4px;
+  background:#293d33; box-shadow:7px 0 #293d33;
+}
+.audio-demo .mini-pixel { margin-inline-start:6px; }
+.audio-demo .mini-pixel::after {
+  content:""; position:absolute; inset:-7px -5px 4px; border:3px solid #ad6646;
+  border-bottom:0; border-radius:9px 9px 2px 2px;
+}
+.audio-demo .mini-pixel:not([data-sound="playing"])::after { transform:rotate(-18deg); }
+#copy-text-button { position:relative; }
+#copy-text-button .mini-pixel { display:none; position:absolute; bottom:95%; right:4px; transform:rotate(-12deg); }
+#copy-text-button.held .mini-pixel { display:block; }
+#copy-text-button .mini-pixel::after { content:""; position:absolute; bottom:-4px; left:1px; width:5px; height:4px; background:#bfd3b2; box-shadow:10px 0 #bfd3b2; }
+.lift-car { position:relative; align-items:stretch; }
+.lift-car .mini-pixel, .lift-car small { display:none; position:absolute; }
+.lift-car .mini-pixel { left:20%; bottom:4px; }
+.lift-car small { right:8%; bottom:1px; background:#e1bf89; color:#392f20; font:bold 8px/1.4 monospace; padding:1px 2px; }
+.arrived.has-parcel .lift-car :is(.mini-pixel,small) { display:block; }
+.lift-car span { position:relative; }
+.signal-spark { position:fixed; pointer-events:none; z-index:10; width:6px; height:6px; background:#d8844d; box-shadow:0 0 7px #e5ac70; }
+@media (prefers-reduced-motion: no-preference) {
+  .mini-pixel[data-sound="playing"] { animation:pixel-nod .72s ease-in-out infinite alternate; }
+  @keyframes pixel-nod { to { transform:translateY(2px) rotate(6deg); } }
+}
