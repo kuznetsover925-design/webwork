@@ -52,9 +52,31 @@
           <p class="lift-floor">Поверх <span id="lift-floor">7</span></p>
           <button type="button" id="sample-action">Викликати</button>
           <p id="sample-result" role="status"></p>
+          <button type="button" id="bits-start" aria-controls="bits-game" hidden>Відкрити посилку Пікселя</button>
         </div>
       </section>
 
+    <section class="bits-game" id="bits-game" aria-labelledby="bits-title" hidden>
+        <h3 id="bits-title" tabindex="-1">Злови сигнал</h3>
+        <p>Увімкни лампи так, щоб сума їхніх чисел збіглася з сигналом.</p>
+        <div class="bits-panel">
+          <p class="bits-goal">Сигнал <strong id="bits-target">6</strong></p>
+          <div class="bits-lamps" role="group" aria-label="Лампи сигналу">
+            <button type="button" data-bit="8" aria-pressed="false">8</button>
+            <button type="button" data-bit="4" aria-pressed="false">4</button>
+            <button type="button" data-bit="2" aria-pressed="false">2</button>
+            <button type="button" data-bit="1" aria-pressed="false">1</button>
+          </div>
+          <p class="bits-readout">Твій сигнал <output id="bits-sum">0</output> <code id="bits-code">0000</code></p>
+          <p id="bits-status" role="status">Сигнал 1 із 3.</p>
+          <button type="button" id="bits-check">Передати</button>
+          <button type="button" id="bits-next" hidden>Наступний сигнал</button>
+        </div>
+        <details id="bits-explain" hidden>
+          <summary>Як чотири лампи дають 16 чисел?</summary>
+          <p>Вимкнена лампа — 0, увімкнена — 1. Для <code>0110</code> світяться 4 і 2, тому виходить 6. Чотири лампи мають 16 комбінацій, від 0 до 15. Ще одна лампа подвоїла б їх кількість.</p>
+        </details>
+      </section>
     <section class="media-layout" id="media" aria-label="Мультимедіа">
       <section class="video-demo" data-player="video" aria-labelledby="video-title">
         <div class="player-heading">
@@ -231,3 +253,4 @@
   <script src="script.js" defer></script>
 </body>
 </html>
+
