@@ -476,7 +476,7 @@ function initNotifications() {
         status.textContent = permission === "denied"
           ? "Дозволь сповіщення в налаштуваннях сайту, щоб спробувати знову."
           : "Запит закрито. Щоб надіслати сповіщення, надай дозвіл.";
-        addSignal(permission === "denied" ? "notificationDenied" : "notificationDismissed");
+        addSignal(permission === "denied" ? "notificationDenied" : "notificationDismissed", button);
         return;
       }
 
@@ -495,12 +495,12 @@ function initNotifications() {
         const registration = await notificationWorker();
         await registration.showNotification(title, options);
         status.textContent = "Запит передано системі. Перевір центр сповіщень.";
-        addSignal("notificationQueued");
+        addSignal("notificationQueued", button);
         return;
       }
       if (shown) {
         status.textContent = "Браузер підтвердив показ системного сповіщення.";
-        addSignal("notificationShown");
+        addSignal("notificationShown", button);
       } else {
         status.textContent = "Браузер не підтвердив показ. Перевір центр сповіщень.";
       }
@@ -529,6 +529,8 @@ function initWebLab() {
   const display = document.getElementById("lift-floor");
   const status = document.getElementById("sample-result");
   const explanation = document.getElementById("lesson-explain");
+  const parcel = document.getElementById("bits-start");
+  initBitsGame(parcel);
   let trips = 0;
   let floor = 7;
   let timer;
@@ -543,7 +545,6 @@ function initWebLab() {
     clearInterval(timer);
     showFloor(7);
     panel.classList.remove("moving", "arrived");
-    call.removeAttribute("aria-disabled");
     call.textContent = "Викликати";
     status.textContent = "";
   }
@@ -553,10 +554,10 @@ function initWebLab() {
     showFloor(1);
     panel.classList.remove("moving");
     panel.classList.add("arrived");
-    call.removeAttribute("aria-disabled");
     call.textContent = "Повернути на сьомий";
     status.textContent = "Поверх 1. Двері відчинено.";
     panel.classList.toggle("has-parcel", ++trips % 2 === 1);
+    parcel.hidden = false;
     addSignal("liftArrived", call);
   }
 
@@ -574,11 +575,11 @@ function initWebLab() {
       return;
     }
     panel.classList.add("moving");
-    call.setAttribute("aria-disabled", "true");
+    call.textContent = "Викликати ще раз";
     status.textContent = "Кабіна їде.";
     showFloor(6);
     timer = setInterval(() => {
-      if (floor === 1) arrive();
+      if (floor <= 2) arrive();
       else showFloor(floor - 1);
     }, 450);
   }
@@ -645,4 +646,82 @@ if (soundtrack) {
   for (const event of ["playing", "pause", "ended", "waiting"]) {
     soundtrack.addEventListener(event, () => { face.dataset.sound = event; });
   }
+}
+
+
+function initBitsGame(start) {
+  const game = document.getElementById("bits-game");
+  const lamps = [...game.querySelectorAll("[data-bit]")];
+  const title = document.getElementById("bits-title");
+  const target = document.getElementById("bits-target");
+  const output = document.getElementById("bits-sum");
+  const code = document.getElementById("bits-code");
+  const status = document.getElementById("bits-status");
+  const check = document.getElementById("bits-check");
+  const next = document.getElementById("bits-next");
+  const explain = document.getElementById("bits-explain");
+  const signals = [6, 11, 13];
+  let round = 0;
+  let sum = 0;
+  let solved = false;
+
+  function updateSignal() {
+    sum = 0;
+    code.textContent = lamps.map((lamp) => {
+      const lit = lamp.getAttribute("aria-pressed") === "true";
+      if (lit) sum += Number(lamp.dataset.bit);
+      return lit ? "1" : "0";
+    }).join("");
+    output.textContent = sum;
+  }
+
+  start.addEventListener("click", () => {
+    game.hidden = false;
+    start.textContent = "До сигналів посилки";
+    title.focus();
+  });
+
+  for (const lamp of lamps) {
+    lamp.addEventListener("click", () => {
+      if (solved) return;
+      lamp.setAttribute("aria-pressed", String(lamp.getAttribute("aria-pressed") !== "true"));
+      updateSignal();
+    });
+  }
+
+  check.addEventListener("click", () => {
+    if (solved) return;
+    if (sum !== signals[round]) {
+      status.textContent = sum < signals[round] ? "Сигнал замалий." : "Сигнал завеликий.";
+      return;
+    }
+
+    solved = true;
+    game.dataset.solved = "true";
+    check.disabled = true;
+    if (round === 0) explain.hidden = false;
+    if (round === signals.length - 1) {
+      status.textContent = "Усі три сигнали прийнято ✓";
+      explain.open = true;
+      explain.querySelector("summary").focus();
+    } else {
+      status.textContent = `Сигнал ${round + 1} із ${signals.length} прийнято ✓`;
+      next.hidden = false;
+      next.focus();
+    }
+  });
+
+  next.addEventListener("click", () => {
+    if (!solved || round === signals.length - 1) return;
+    round++;
+    solved = false;
+    delete game.dataset.solved;
+    for (const lamp of lamps) lamp.setAttribute("aria-pressed", "false");
+    target.textContent = signals[round];
+    status.textContent = `Сигнал ${round + 1} із ${signals.length}.`;
+    check.disabled = false;
+    lamps[0].focus();
+    next.hidden = true;
+    updateSignal();
+  });
 }
